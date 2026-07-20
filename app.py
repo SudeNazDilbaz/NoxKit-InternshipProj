@@ -2,6 +2,8 @@ import streamlit as st
 
 from noxkit.password_analyzer import analyze_password
 
+from noxkit.hash_generator import generate_hash
+
 st.set_page_config(
     page_title="NOXKIT",
     page_icon="🌙",
@@ -85,3 +87,32 @@ if st.button("Analyze Password"):
         
         if score == 5:
             st.success("Excellent! Your password meets all recommended security criteria.")
+
+st.divider()
+
+st.header("🔒 Hash Generator")
+
+text = st.text_input("Enter text to hash")
+
+algorithm = st.selectbox(
+    "Select an algorithm",
+    [
+        "MD5",
+        "SHA-1",
+        "SHA-256",
+        "SHA-512",
+    ]
+)
+
+if st.button("Generate Hash"):
+
+    if not text:
+        st.warning("Please enter some text.")
+
+    else:
+
+        hash_result = generate_hash(text, algorithm)
+
+        st.subheader("Hash Result")
+
+        st.code(hash_result)
