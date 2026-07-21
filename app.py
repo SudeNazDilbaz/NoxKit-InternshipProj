@@ -4,6 +4,8 @@ from noxkit.password_analyzer import analyze_password
 
 from noxkit.hash_generator import generate_hash
 
+from noxkit.file_integrity import generate_file_hash
+
 st.set_page_config(
     page_title="NOXKIT",
     page_icon="🌙",
@@ -116,3 +118,27 @@ if st.button("Generate Hash"):
         st.subheader("Hash Result")
 
         st.code(hash_result)
+
+st.divider()
+
+st.header("📁 File Integrity Checker")
+
+uploaded_file = st.file_uploader(
+    "Upload a file",
+    type=None
+)
+
+if uploaded_file is not None:
+    st.write(f"File name: {uploaded_file.name}")
+    st.write(f"File size: {uploaded_file.size} bytes")
+
+    if st.button("Generate File Hash"):
+        file_data = uploaded_file.getvalue()
+        file_hash = generate_file_hash(file_data)
+
+        if file_hash is None:
+            st.error("The file hash could not be generated.")
+        else:
+            st.subheader("SHA-256 Hash")
+            st.code(file_hash)
+            st.success("File hash generated successfully.")
