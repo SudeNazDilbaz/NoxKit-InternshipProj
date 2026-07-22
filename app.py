@@ -12,133 +12,247 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🌙 NOXKIT")
-st.subheader("Python Security Toolkit")
+st.markdown("""
+<style>
+
+/* Background */
+.stApp{
+    background:#1E1E2F;
+    color:#F3F4F6;
+}
+
+/* All text */
+html, body, p, label, span, div{
+    color:#F3F4F6;
+}
+
+/* Titles */
+h1,h2,h3{
+    color:#A78BFA !important;
+}
+h1{
+    text-shadow:
+        0 0 8px rgba(139, 92, 246, 0.45),
+        0 0 18px rgba(139, 92, 246, 0.25);
+}
+
+/* Caption */
+[data-testid="stCaptionContainer"]{
+    color:#C4C4D4 !important;
+}
+
+/* Streamlit containers */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: #2A2A40;
+    border: 1px solid #404060 !important;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 25px;
+}
+   
+/* Text Input */
+.stTextInput input{
+    background:#2A2A40 !important;
+    color:white !important;
+    border:1px solid #555;
+}
+
+/* Selectbox */
+[data-baseweb="select"] > div{
+    background:#2A2A40 !important;
+    color:white !important;
+}
+
+/* File uploader */
+[data-testid="stFileUploader"]{
+    color:white;
+}
+
+/* Buttons */
+.stButton > button{
+    background:#8B5CF6;
+    color:white;
+    border-radius:10px;
+    border:none;
+    font-weight:bold;
+}
+
+.stButton > button:hover{
+    background:#7C3AED;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<h1 style='text-align:center;color:#6C63FF;'>
+🌙 NOXKIT
+</h1>
+""", unsafe_allow_html=True)
+
+st.markdown(
+"<p style='text-align:center;'>Security Toolkit</p>",
+unsafe_allow_html=True
+)
+
+st.divider()
 
 st.write("Welcome to NOXKIT!")
 st.write("This toolkit provides simple security-related utilities.")
 
 st.divider()
-st.header("🔑Password Analyzer")
 
-password = st.text_input("Enter a password:", type="password")
+with st.container(border=True):
 
-if st.button("Analyze Password"):
-    if not password:
-        st.warning("Please enter a password.")
-    else:
-        result = analyze_password(password)
-        checks = result["checks"]
-        score = result["score"]
+    st.subheader("🔑 Password Analyzer")
 
-        st.subheader("Analysis Results")
+    st.caption(
+        "Check whether your password meets common security requirements."
+    )
 
-        st.write(f"Score: {score}/5")
-        st.progress(score / 5)
+    password = st.text_input(
+        "Enter a password:",
+        type="password"
+    )
 
-        if score <= 2:
-            st.error("Weak Password")
-            
-        elif score <= 4:
-            st.warning("Medium Password")
-        
+    if st.button("Analyze Password"):
+
+        if not password:
+            st.warning("Please enter a password.")
+
         else:
-            st.success("Strong Password")
+            result = analyze_password(password)
+            checks = result["checks"]
+            score = result["score"]
 
-        if checks["length"]: 
-            st.success("At least 8 characters") 
-        else: 
-            st.error("At least 8 characters") 
-            
-        if checks["uppercase"]: 
-            st.success("Contains an uppercase letter") 
-        else: 
-            st.error("Contains an uppercase letter") 
-            
-        if checks["lowercase"]: 
-            st.success("Contains a lowercase letter") 
-        else: 
-            st.error("Contains a lowercase letter") 
-            
-        if checks["number"]: 
-            st.success("Contains a number") 
-        else: 
-            st.error("Contains a number") 
-            
-        if checks["special"]: 
-            st.success("Contains a special character") 
-        else: 
-            st.error("Contains a special character")
-        
-        st.subheader("Suggestions")
-        
-        if not checks["length"]:
-            st.write("• Increase password length (at least 8 characters).")
-        
-        if not checks["uppercase"]:
-            st.write("• Add an uppercase letter.")
-            
-        if not checks["lowercase"]:
-            st.write("• Add a lowercase letter.")
-            
-        if not checks["number"]:
-            st.write("• Add a number.")
-            
-        if not checks["special"]:
-            st.write("• Add a special character.")
-        
-        if score == 5:
-            st.success("Excellent! Your password meets all recommended security criteria.")
+            st.subheader("Analysis Results")
+
+            st.write(f"Score: {score}/5")
+            st.progress(score / 5)
+
+            if score <= 2:
+                st.error("Weak Password")
+
+            elif score <= 4:
+                st.warning("Medium Password")
+
+            else:
+                st.success("Strong Password")
+
+            if checks["length"]:
+                st.success("At least 8 characters")
+            else:
+                st.error("At least 8 characters")
+
+            if checks["uppercase"]:
+                st.success("Contains an uppercase letter")
+            else:
+                st.error("Contains an uppercase letter")
+
+            if checks["lowercase"]:
+                st.success("Contains a lowercase letter")
+            else:
+                st.error("Contains a lowercase letter")
+
+            if checks["number"]:
+                st.success("Contains a number")
+            else:
+                st.error("Contains a number")
+
+            if checks["special"]:
+                st.success("Contains a special character")
+            else:
+                st.error("Contains a special character")
+
+            st.subheader("Suggestions")
+
+            if not checks["length"]:
+                st.write("• Increase password length (at least 8 characters).")
+
+            if not checks["uppercase"]:
+                st.write("• Add an uppercase letter.")
+
+            if not checks["lowercase"]:
+                st.write("• Add a lowercase letter.")
+
+            if not checks["number"]:
+                st.write("• Add a number.")
+
+            if not checks["special"]:
+                st.write("• Add a special character.")
+
+            if score == 5:
+                st.success(
+                    "Excellent! Your password meets all recommended security criteria."
+                )
 
 st.divider()
 
-st.header("🔒 Hash Generator")
+with st.container(border=True):
 
-text = st.text_input("Enter text to hash")
+    st.subheader("🔒 Hash Generator")
 
-algorithm = st.selectbox(
-    "Select an algorithm",
-    [
-        "MD5",
-        "SHA-1",
-        "SHA-256",
-        "SHA-512",
-    ]
-)
+    st.caption(
+        "Generate cryptographic hash values using different algorithms."
+    )
 
-if st.button("Generate Hash"):
+    text = st.text_input("Enter text to hash")
 
-    if not text:
-        st.warning("Please enter some text.")
+    algorithm = st.selectbox(
+        "Select an algorithm",
+        [
+            "MD5",
+            "SHA-1",
+            "SHA-256",
+            "SHA-512",
+        ]
+    )
 
-    else:
+    if st.button("Generate Hash"):
 
-        hash_result = generate_hash(text, algorithm)
+        if not text:
+            st.warning("Please enter some text.")
 
-        st.subheader("Hash Result")
+        else:
+            hash_result = generate_hash(text, algorithm)
 
-        st.code(hash_result)
+            st.subheader("Hash Result")
+            st.code(hash_result)
+            st.success("Hash generated successfully.")
 
 st.divider()
 
-st.header("📁 File Integrity Checker")
+with st.container(border=True):
 
-uploaded_file = st.file_uploader(
-    "Upload a file",
-    type=None
-)
+    st.subheader("📁 File Integrity Checker")
 
-if uploaded_file is not None:
-    st.write(f"File name: {uploaded_file.name}")
-    st.write(f"File size: {uploaded_file.size} bytes")
+    st.caption(
+        "Calculate the SHA-256 hash of an uploaded file."
+    )
 
-    if st.button("Generate File Hash"):
-        file_data = uploaded_file.getvalue()
-        file_hash = generate_file_hash(file_data)
+    uploaded_file = st.file_uploader(
+        "Upload a file",
+        type=None
+    )
 
-        if file_hash is None:
-            st.error("The file hash could not be generated.")
-        else:
-            st.subheader("SHA-256 Hash")
-            st.code(file_hash)
-            st.success("File hash generated successfully.")
+    if uploaded_file is not None:
+
+        st.write(f"File name: {uploaded_file.name}")
+        st.write(f"File size: {uploaded_file.size} bytes")
+
+        if st.button("Generate File Hash"):
+
+            file_data = uploaded_file.getvalue()
+            file_hash = generate_file_hash(file_data)
+
+            if file_hash is None:
+                st.error("The file hash could not be generated.")
+
+            else:
+                st.subheader("SHA-256 Hash")
+                st.code(file_hash)
+                st.success("File hash generated successfully.")
+
+st.divider()
+
+st.caption("NoxKit v1.0 • Security Toolkit")
