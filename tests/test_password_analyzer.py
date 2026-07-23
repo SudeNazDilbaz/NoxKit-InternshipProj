@@ -1,20 +1,31 @@
 from noxkit.password_analyzer import analyze_password
 
-passwords = [
-    "password",
-    "Password",
-    "Password123",
-    "Password123!",
-    "12345678",
-    "abc",
-]
+test_cases ={
+    "password":2,
+    "Password":3,
+    "Password123":4,
+    "Password123!":5,
+    "12345678":2,
+    "abc":1,
+}
 
 print("=" * 50)
 print("Password Analyzer Test Results")
 print("=" * 50)
 
-for password in passwords:
+for password, expected_score in test_cases.items():
     result = analyze_password(password)
-    print(f"{password} -> {result}")
+    actual_score = result["score"]
 
-print("\nAll tests completed.")
+    assert actual_score == expected_score, (
+        f"Test failed for '{password}': "
+        f"expected {expected_score}, got {actual_score}"
+    )
+
+    print(
+        f"PASS: {password!r} "
+        f"-> score {actual_score}/{expected_score}"
+    )
+
+
+print("\nAll password analyzer tests passed successfully.")

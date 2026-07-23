@@ -1,7 +1,11 @@
 import re
+from typing import Any
 
 
-def analyze_password(password):
+def analyze_password(password:str) -> dict[str,Any]:
+
+    """Analyzes the given password according to common criteria."""
+    
     checks = {
         "length": len(password) >= 8,
         "uppercase": bool(re.search(r"[A-Z]", password)),
